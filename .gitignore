@@ -1,0 +1,25 @@
+# ── Angular / Node ─────────────────────────────────────────
+node_modules/
+dist/
+.angular/
+*.js.map
+
+# ── Test runtime artifacts (screenshots, logs, browser data)
+test-output/
+
+# ── Claude Code internals (machine-specific, not project code)
+.claude/
+
+# ── OS / Editor ─────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.local
+.env
+.env.*
+
+# ── IDE ──────────────────────────────────────────────────────
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln

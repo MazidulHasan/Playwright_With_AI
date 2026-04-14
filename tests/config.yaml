@@ -1,0 +1,99 @@
+project:
+  name: ngx-admin Datepicker
+  url: http://localhost:4200
+  page: /pages/forms/datepicker
+  framework: Angular 14 + Nebular 10
+  title: playwright-test-admin Demo Application
+
+web3:
+  enabled: false
+
+viewports:
+  desktop:
+    width: 1920
+    height: 1080
+  tablet:
+    width: 768
+    height: 1024
+  mobile:
+    width: 375
+    height: 667
+    isMobile: true
+
+roles:
+  - id: guest
+    name: Guest
+    description: No authentication required — Nebular DummyAuthStrategy allows all access
+    setup: none
+
+modules:
+  - id: form-picker
+    name: Common Datepicker
+    description: Standard single-date picker with no date restrictions
+    selector: "input[placeholder='Form Picker']"
+  - id: range-picker
+    name: Range Datepicker
+    description: Dual-date picker for selecting a start and end date range
+    selector: "input[placeholder='Range Picker']"
+  - id: minmax-picker
+    name: Min/Max Datepicker
+    description: Single-date picker constrained to today ±5 days
+    selector: "input[placeholder='Min Max Picker']"
+    min: today - 5 days
+    max: today + 5 days
+
+generated:
+  date: 2026-04-14
+  by: web-test-case-gen
+  version: 2.0.0
+
+test_summary:
+  flow: 4
+  layout: 3
+  functionality: 13
+  network: 2
+  role: 1
+  negative: 5
+  seo: 2
+  link: 1
+  total: 31
+
+execution_order:
+  # FLOW
+  - FLOW-DP-001
+  - FLOW-DP-002
+  - FLOW-DP-003
+  - FLOW-DP-004
+  # LAYOUT
+  - LAYOUT-DP-DESKTOP-001
+  - LAYOUT-DP-TABLET-001
+  - LAYOUT-DP-MOBILE-001
+  # FUNC
+  - FUNC-DP-001
+  - FUNC-DP-002
+  - FUNC-DP-003
+  - FUNC-DP-004
+  - FUNC-DP-005
+  - FUNC-DP-006
+  - FUNC-DP-007
+  - FUNC-DP-008
+  - FUNC-DP-009
+  - FUNC-DP-010
+  - FUNC-DP-011
+  - FUNC-DP-012
+  # NET
+  - NET-DP-001
+  - NET-DP-002
+  # ROLE
+  - ROLE-DP-001
+  # NEG
+  - NEG-DP-001
+  - NEG-DP-002
+  - NEG-DP-003
+  - NEG-DP-004
+  - NEG-DP-005
+  # SEO
+  - SEO-DP-001
+  - SEO-DP-002
+  # LINK
+  - LINK-DP-001

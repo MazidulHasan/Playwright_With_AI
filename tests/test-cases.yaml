@@ -1,0 +1,1188 @@
+# ============================================================
+# TEST CASES — ngx-admin Datepicker Page
+# URL: http://localhost:4200/pages/forms/datepicker
+# Generated: 2026-04-14
+# ============================================================
+
+# ============================================================
+# FLOW TESTS — Complete user journeys
+# ============================================================
+
+- id: FLOW-DP-001
+  name: Select Single Date with Common Datepicker
+  type: flow
+  module: form-picker
+  feature: Common Datepicker - Happy Path
+  priority: critical
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Test the complete journey of selecting a date using the Common Datepicker.
+      Verifies: input click opens calendar, day selection populates the input field,
+      and the calendar dismisses after selection.
+    coverage:
+      - Input click opens calendar popup
+      - Calendar shows current month (APRIL 2026)
+      - Today (14) is highlighted
+      - Clicking a day populates the input
+      - Calendar closes after selection
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+      reason: Wait for Angular lazy-load
+    - action: screenshot
+      name: flow-dp-001-initial
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+      reason: Wait for calendar animation
+    - action: screenshot
+      name: flow-dp-001-calendar-open
+    - action: click
+      selector: "nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('10')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: flow-dp-001-date-selected
+  expected:
+    - Calendar popup opens below the input
+    - Current month and year shown in header
+    - Today (14) highlighted with blue border
+    - Clicking day 10 populates input with date string
+    - Calendar dismisses after selection
+
+- id: FLOW-DP-002
+  name: Select Date Range with Range Picker
+  type: flow
+  module: range-picker
+  feature: Range Datepicker - Happy Path
+  priority: critical
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Test the complete journey of selecting a start and end date using the Range Picker.
+      Verifies: two-click selection model (start date then end date),
+      range highlight between the two dates, and input population.
+    coverage:
+      - Input click opens range calendar
+      - First click sets start date
+      - Range highlight appears as end date is hovered/selected
+      - Second click sets end date
+      - Input shows formatted date range
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Range Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: flow-dp-002-range-open
+    - action: click
+      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('5')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: flow-dp-002-start-selected
+    - action: click
+      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('15')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: flow-dp-002-range-complete
+  expected:
+    - Calendar opens for range selection
+    - Clicking day 5 sets the start date
+    - Days 5–15 show range highlight
+    - Clicking day 15 sets end date
+    - Calendar closes, input shows "Apr 5 - Apr 15, 2026" or similar
+    - Range is visually highlighted in calendar
+
+- id: FLOW-DP-003
+  name: Select Date Within Min/Max Boundary
+  type: flow
+  module: minmax-picker
+  feature: Min/Max Datepicker - Happy Path
+  priority: critical
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Test selecting a valid date within the ±5-day boundary of the Min/Max Picker.
+      Min = today - 5 (Apr 9), Max = today + 5 (Apr 19).
+      Verifies: dates outside range are visually disabled, valid date can be selected.
+    coverage:
+      - Disabled dates are greyed/unclickable
+      - Valid dates in range are selectable
+      - Input populated after valid selection
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Min Max Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: flow-dp-003-minmax-open
+    - action: click
+      selector: "nb-datepicker nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('17')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: flow-dp-003-valid-date-selected
+  expected:
+    - Calendar opens showing current month
+    - Dates before Apr 9 are greyed out and not interactive
+    - Dates after Apr 19 are greyed out and not interactive
+    - Clicking Apr 17 (within range) populates the input
+    - Calendar dismisses after selection
+
+- id: FLOW-DP-004
+  name: Navigate to Previous Month and Select Date
+  type: flow
+  module: form-picker
+  feature: Common Datepicker - Month Navigation
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Test navigating to the previous month using the ‹ arrow and selecting a date.
+      Verifies month navigation and that dates from other months are selectable.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: flow-dp-004-current-month
+    - action: click
+      selector: "nb-calendar-navigation [data-name='prev'], nb-datepicker nb-calendar-pageable-navigation button:first-child"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: flow-dp-004-prev-month
+    - action: click
+      selector: "nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('20')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: flow-dp-004-prev-month-date-selected
+  expected:
+    - ‹ button navigates to March 2026
+    - March calendar days are displayed
+    - Clicking day 20 selects March 20, 2026
+    - Input shows the selected March date
+
+# ============================================================
+# LAYOUT TESTS — Responsive design across viewports
+# ============================================================
+
+- id: LAYOUT-DP-DESKTOP-001
+  name: Desktop Layout - Datepicker Page (1920x1080)
+  type: layout
+  module: ui
+  feature: Responsive Design - Desktop
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  viewport:
+    width: 1920
+    height: 1080
+    isMobile: false
+  description:
+    purpose: |
+      Verify the datepicker page renders correctly on a 1920x1080 desktop viewport.
+      All 3 cards should appear side-by-side in a single row.
+    layout_checks:
+      - 3 cards in one horizontal row
+      - Sidebar navigation visible on left
+      - Header with theme switcher at top
+      - All input fields visible and aligned
+  steps:
+    - action: set-viewport
+      width: 1920
+      height: 1080
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: screenshot
+      name: layout-dp-desktop-full
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: layout-dp-desktop-calendar-open
+  expected:
+    - 3 datepicker cards in a single horizontal row (col-lg-4 layout)
+    - Left sidebar fully visible
+    - No horizontal scrollbar
+    - Calendar popup fits within viewport without clipping
+    - All card headers readable
+
+- id: LAYOUT-DP-TABLET-001
+  name: Tablet Layout - Datepicker Page (768x1024)
+  type: layout
+  module: ui
+  feature: Responsive Design - Tablet
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  viewport:
+    width: 768
+    height: 1024
+    isMobile: false
+  description:
+    purpose: |
+      Verify the datepicker page adapts correctly to a tablet viewport (768x1024).
+      Cards may stack or reduce columns. Sidebar may collapse.
+    layout_checks:
+      - Cards stack to 2 or 1 per row at tablet width
+      - Inputs remain full-width within cards
+      - Calendar popup does not overflow viewport
+  steps:
+    - action: set-viewport
+      width: 768
+      height: 1024
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: screenshot
+      name: layout-dp-tablet-full
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: layout-dp-tablet-calendar-open
+  expected:
+    - Cards adapt to tablet column layout (col-md-12 = full width at tablet)
+    - No overlapping elements
+    - Calendar popup visible and usable
+    - Touch targets adequately sized (>= 44x44px)
+
+- id: LAYOUT-DP-MOBILE-001
+  name: Mobile Layout - Datepicker Page (375x667)
+  type: layout
+  module: ui
+  feature: Responsive Design - Mobile
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  viewport:
+    width: 375
+    height: 667
+    isMobile: true
+  description:
+    purpose: |
+      Verify the datepicker page renders correctly on a mobile viewport (375x667).
+      Cards stack vertically; calendar popup must fit within the narrow screen.
+    layout_checks:
+      - Each card stacks full-width (single column)
+      - Calendar popup adapts to narrow width
+      - No horizontal overflow
+      - Day cells remain tappable
+  steps:
+    - action: set-viewport
+      width: 375
+      height: 667
+      isMobile: true
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: screenshot
+      name: layout-dp-mobile-full
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: layout-dp-mobile-calendar-open
+  expected:
+    - All 3 cards stacked vertically (full width on mobile)
+    - Calendar popup fits within 375px width
+    - Day cells are finger-friendly (not too small)
+    - No horizontal scrollbar
+    - Input text readable without zoom
+
+# ============================================================
+# FUNCTIONALITY TESTS — Feature-level verification
+# ============================================================
+
+- id: FUNC-DP-001
+  name: Common Datepicker Opens on Input Click
+  type: functionality
+  module: form-picker
+  feature: Calendar Popup - Open
+  priority: critical
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: Verify clicking the Form Picker input opens the calendar popup.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: screenshot
+      name: func-dp-001-before-click
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: func-dp-001-calendar-open
+  expected:
+    - Calendar popup appears below the input
+    - Current month displayed (APRIL 2026)
+    - Calendar shows Su-Sa column headers
+    - Today (14) highlighted with blue border
+
+- id: FUNC-DP-002
+  name: Common Datepicker Closes on Escape Key
+  type: functionality
+  module: form-picker
+  feature: Calendar Popup - Close via Escape
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: Verify pressing Escape closes the calendar popup without selecting a date.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: func-dp-002-open
+    - action: press
+      selector: "body"
+      key: "Escape"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: func-dp-002-closed
+  expected:
+    - Calendar closes after Escape
+    - Input field remains empty (no date selected)
+    - No error state
+
+- id: FUNC-DP-003
+  name: Common Datepicker Closes on Outside Click
+  type: functionality
+  module: form-picker
+  feature: Calendar Popup - Close via Outside Click
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify clicking outside the calendar popup closes it without selecting a date.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+    - action: click
+      selector: "nb-layout-header"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: func-dp-003-closed-outside-click
+  expected:
+    - Calendar dismisses on outside click
+    - Input remains empty
+    - No residual overlay visible
+
+- id: FUNC-DP-004
+  name: Selected Date Populates Input Field
+  type: functionality
+  module: form-picker
+  feature: Date Selection - Input Population
+  priority: critical
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify that clicking a valid day in the calendar populates the input field
+      with a correctly formatted date string and closes the calendar.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+    - action: click
+      selector: "nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('10')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: func-dp-004-date-in-input
+  expected:
+    - Input field shows selected date (e.g. "Apr 10, 2026" or "4/10/2026")
+    - Calendar closes after selection
+    - Placeholder text replaced by the selected date value
+
+- id: FUNC-DP-005
+  name: Previous Month Navigation Button
+  type: functionality
+  module: form-picker
+  feature: Calendar Navigation - Previous Month
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify the ‹ (previous) button in the calendar header navigates to the prior month.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: func-dp-005-april-visible
+    - action: click
+      selector: "nb-datepicker nb-calendar-pageable-navigation .prev-month, nb-datepicker [data-name='prev']"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: func-dp-005-march-visible
+  expected:
+    - Header changes from "APRIL 2026" to "MARCH 2026"
+    - March days grid is displayed
+    - March 2026 has 31 days starting on Sunday
+
+- id: FUNC-DP-006
+  name: Next Month Navigation Button
+  type: functionality
+  module: form-picker
+  feature: Calendar Navigation - Next Month
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify the › (next) button in the calendar header navigates to the following month.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+    - action: click
+      selector: "nb-datepicker nb-calendar-pageable-navigation .next-month, nb-datepicker [data-name='next']"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: func-dp-006-may-visible
+  expected:
+    - Header changes from "APRIL 2026" to "MAY 2026"
+    - May days grid is displayed
+
+- id: FUNC-DP-007
+  name: Month/Year Header Click Opens Year-Month View
+  type: functionality
+  module: form-picker
+  feature: Calendar Navigation - Header View Toggle
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify clicking the "APRIL 2026 ▼" header in the calendar switches to
+      a month/year selection view (Nebular NbCalendar view mode toggle).
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+    - action: click
+      selector: "nb-calendar-view-mode button, nb-datepicker nb-calendar-navigation .title"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: func-dp-007-year-view
+  expected:
+    - View changes from day grid to month-name grid
+    - Month names (JAN, FEB, MAR … DEC) displayed
+    - Header shows year ("2026 ▼")
+
+- id: FUNC-DP-008
+  name: Range Picker Opens and Shows Single Calendar
+  type: functionality
+  module: range-picker
+  feature: Range Datepicker - Open
+  priority: critical
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify the Range Picker input opens a calendar popup identical in layout
+      to the common datepicker but configured for range selection.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Range Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: func-dp-008-range-open
+  expected:
+    - Calendar popup opens below Range Picker input
+    - Current month displayed
+    - No date highlighted (nothing selected yet)
+    - Calendar appearance is same as common datepicker
+
+- id: FUNC-DP-009
+  name: Range Picker - Start Date Selection Highlights Start
+  type: functionality
+  module: range-picker
+  feature: Range Datepicker - Start Date
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify that after clicking the first date in the range picker,
+      it is highlighted as the start of the range and the calendar stays open.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Range Picker']"
+    - action: wait
+      ms: 500
+    - action: click
+      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('8')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: func-dp-009-start-selected
+  expected:
+    - Day 8 is highlighted as range start
+    - Calendar remains open (waiting for end date)
+    - Input field shows partial selection or remains empty until end date chosen
+
+- id: FUNC-DP-010
+  name: Min/Max Picker - Disabled Dates Are Not Selectable
+  type: functionality
+  module: minmax-picker
+  feature: Min/Max Datepicker - Disabled Date Restriction
+  priority: critical
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify that dates outside the ±5 day window (before Apr 9 or after Apr 19)
+      are visually greyed out and cannot be selected in the Min/Max Picker.
+      Min = today - 5, Max = today + 5. Today = Apr 14, 2026.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Min Max Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: func-dp-010-minmax-disabled-visible
+    - action: click
+      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('3')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: func-dp-010-disabled-click-attempt
+  expected:
+    - Dates before Apr 9 are rendered with disabled/greyed styling
+    - Dates after Apr 19 are rendered with disabled/greyed styling
+    - Clicking Apr 3 does NOT select it — input stays empty
+    - Calendar stays open after clicking disabled date
+
+- id: FUNC-DP-011
+  name: Min/Max Picker - Valid Date Within Range is Selectable
+  type: functionality
+  module: minmax-picker
+  feature: Min/Max Datepicker - Valid Date Selection
+  priority: critical
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify that dates within the ±5 day window (Apr 9–19) are selectable
+      in the Min/Max Picker and populate the input correctly.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Min Max Picker']"
+    - action: wait
+      ms: 500
+    - action: click
+      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('16')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: func-dp-011-valid-selected
+  expected:
+    - Apr 16 (within range) is selectable
+    - Input is populated with the selected date
+    - Calendar closes after selection
+
+- id: FUNC-DP-012
+  name: Today is Highlighted in All Three Pickers
+  type: functionality
+  module: form-picker
+  feature: Calendar - Today Indicator
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify that today's date (Apr 14, 2026) is visually highlighted
+      with a distinct blue border/ring in all three calendar popups.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: func-dp-012-today-form-picker
+    - action: press
+      selector: "body"
+      key: "Escape"
+    - action: wait
+      ms: 300
+    - action: click
+      selector: "input[placeholder='Range Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: func-dp-012-today-range-picker
+    - action: press
+      selector: "body"
+      key: "Escape"
+    - action: wait
+      ms: 300
+    - action: click
+      selector: "input[placeholder='Min Max Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: func-dp-012-today-minmax-picker
+  expected:
+    - In all three calendars, day 14 has a blue border/ring (today indicator)
+    - Today's cell is visually distinct from other days
+    - Indicator uses the app's primary color (blue in Light theme)
+
+- id: FUNC-DP-013
+  name: Input Field is Read-Only / Non-Typeable
+  type: functionality
+  module: form-picker
+  feature: Common Datepicker - Input Behavior
+  priority: medium
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify that the datepicker input field only accepts values via calendar
+      selection and does not allow free-form typing. Nebular nb-datepicker
+      inputs are typically read-only; direct typing should be blocked or ignored.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: fill
+      selector: "input[placeholder='Form Picker']"
+      value: "2026-01-01"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: func-dp-013-typed-input
+  expected:
+    - Either input rejects typed text and remains empty
+    - Or calendar opens and typed value is not directly used
+    - No crash or error state from typing
+
+# ============================================================
+# NETWORK TESTS — Behavior under adverse network conditions
+# ============================================================
+
+- id: NET-DP-001
+  name: Datepicker Page Loads Under High Latency
+  type: network
+  module: ui
+  feature: Network Handling - High Latency
+  priority: medium
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify the datepicker page loads and functions correctly with 2000ms added
+      latency. Since all data is mock/in-memory, the calendar itself should work
+      fine; only the initial Angular bundle load may be affected.
+  steps:
+    - action: set-network
+      options: "--latency 2000"
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 5000
+      reason: Allow for delayed page load
+    - action: screenshot
+      name: net-dp-001-high-latency-loaded
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 1000
+    - action: screenshot
+      name: net-dp-001-calendar-works
+    - action: clear-network
+  expected:
+    - Page eventually loads (may take longer)
+    - Calendar popup still opens and functions
+    - No timeout errors for calendar interaction (it is client-side only)
+
+- id: NET-DP-002
+  name: Datepicker Functions While Offline
+  type: network
+  module: ui
+  feature: Network Handling - Offline
+  priority: medium
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify that once the page is loaded, the datepicker still works in offline mode.
+      The calendar uses only client-side Angular/Nebular logic — no API calls needed.
+      Tests resilience of fully client-side component.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: set-network
+      options: "--offline"
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: net-dp-002-calendar-offline
+    - action: click
+      selector: "nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('10')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: net-dp-002-date-selected-offline
+    - action: set-network
+      options: "--online"
+  expected:
+    - Calendar still opens while offline
+    - Date selection still works (fully client-side)
+    - Input populated successfully
+    - No network error messages
+
+# ============================================================
+# ROLE & PERMISSION TESTS
+# ============================================================
+
+- id: ROLE-DP-001
+  name: Datepicker Page Accessible Without Authentication
+  type: role
+  module: auth
+  feature: Permission Control - Guest Access
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  role: guest
+  description:
+    purpose: |
+      Verify the datepicker page is accessible without logging in.
+      The app uses NbDummyAuthStrategy — any credentials work and the page
+      does not enforce authentication for navigation.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: screenshot
+      name: role-dp-001-no-auth
+  expected:
+    - Page loads successfully with all 3 datepicker cards
+    - No redirect to /auth/login
+    - No "access denied" message
+    - All datepicker inputs are interactive
+
+# ============================================================
+# NEGATIVE TESTS — Error and boundary scenarios
+# ============================================================
+
+- id: NEG-DP-001
+  name: Min/Max Picker - Cannot Select Date Before Min
+  type: negative
+  module: minmax-picker
+  feature: Min/Max - Below Minimum Boundary
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify that a date before the minimum (today - 5 = Apr 9) cannot be selected.
+      The date should be visually disabled and clicking it should have no effect.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Min Max Picker']"
+    - action: wait
+      ms: 500
+    - action: click
+      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('5')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: neg-dp-001-below-min
+  expected:
+    - Apr 5 is rendered as disabled (greyed out)
+    - Clicking Apr 5 does NOT populate the input
+    - Calendar remains open (not dismissed by disabled click)
+    - No error thrown
+
+- id: NEG-DP-002
+  name: Min/Max Picker - Cannot Select Date After Max
+  type: negative
+  module: minmax-picker
+  feature: Min/Max - Above Maximum Boundary
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify that a date after the maximum (today + 5 = Apr 19) cannot be selected.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Min Max Picker']"
+    - action: wait
+      ms: 500
+    - action: click
+      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('25')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: neg-dp-002-above-max
+  expected:
+    - Apr 25 is rendered as disabled (greyed out)
+    - Clicking Apr 25 does NOT populate the input
+    - Calendar remains open
+    - No error thrown
+
+- id: NEG-DP-003
+  name: Min/Max Picker - Boundary Dates Are Selectable (Edge Case)
+  type: negative
+  module: minmax-picker
+  feature: Min/Max - Boundary Inclusivity
+  priority: medium
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify the exact boundary dates (min = Apr 9, max = Apr 19) are selectable.
+      Boundary dates should be inclusive and not treated as disabled.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Min Max Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: neg-dp-003-min-boundary
+    - action: click
+      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('9')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: neg-dp-003-min-selected
+    - action: click
+      selector: "input[placeholder='Min Max Picker']"
+    - action: wait
+      ms: 500
+    - action: click
+      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('19')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: neg-dp-003-max-selected
+  expected:
+    - Apr 9 (min) is NOT greyed out — is selectable
+    - Apr 9 click populates input
+    - Apr 19 (max) is NOT greyed out — is selectable
+    - Apr 19 click populates input
+
+- id: NEG-DP-004
+  name: Range Picker - Re-clicking Start Date Resets Range
+  type: negative
+  module: range-picker
+  feature: Range Datepicker - Reset on Re-click
+  priority: medium
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify that after selecting a complete range, clicking the input again and
+      choosing a new start date resets the range (not appends to it).
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Range Picker']"
+    - action: wait
+      ms: 500
+    - action: click
+      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('5')"
+    - action: wait
+      ms: 200
+    - action: click
+      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('10')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: neg-dp-004-first-range
+    - action: click
+      selector: "input[placeholder='Range Picker']"
+    - action: wait
+      ms: 500
+    - action: click
+      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('20')"
+    - action: wait
+      ms: 200
+    - action: screenshot
+      name: neg-dp-004-range-reset
+  expected:
+    - Second interaction resets the range selection
+    - New start date (20) is set, previous range is cleared
+    - Calendar remains open waiting for new end date
+
+- id: NEG-DP-005
+  name: Common Datepicker - Bounding Month Days Are Unselectable
+  type: negative
+  module: form-picker
+  feature: Common Datepicker - Bounding Month Cells
+  priority: low
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify that the greyed-out "bounding month" days shown at the edges of the
+      calendar grid (e.g. Mar 29-31 shown at top of April, May 1-2 at bottom)
+      either navigate to that month or are non-interactive, not treated as
+      current-month selections.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: click
+      selector: "input[placeholder='Form Picker']"
+    - action: wait
+      ms: 500
+    - action: screenshot
+      name: neg-dp-005-bounding-days-visible
+    - action: click
+      selector: "nb-calendar-day-cell.bounding-month .day-cell:has-text('29')"
+    - action: wait
+      ms: 300
+    - action: screenshot
+      name: neg-dp-005-bounding-day-clicked
+  expected:
+    - Bounding month days (Mar 29, 30, 31) appear in lighter grey style
+    - Clicking a bounding day either navigates to that month OR is ignored
+    - Not treated as an April date selection
+
+# ============================================================
+# SEO TESTS — Meta tags and head element validation
+# ============================================================
+
+- id: SEO-DP-001
+  name: Essential Head Elements Present
+  type: seo
+  module: seo
+  feature: SEO - Basic Head Elements
+  priority: high
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify that the Angular application includes essential HTML head elements.
+      Note: This is a dev/demo app — description and keywords may be minimal.
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: screenshot
+      name: seo-dp-001-page
+  expected:
+    - <title> tag is present and not empty (should be "playwright-test-admin Demo Application")
+    - <meta charset> is defined (utf-8)
+    - <meta name="viewport"> is set for responsive design
+    - <link rel="icon"> (favicon) is present
+    - Page renders without console errors
+
+- id: SEO-DP-002
+  name: Page Title Reflects Application Name
+  type: seo
+  module: seo
+  feature: SEO - Page Title
+  priority: medium
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify the browser tab title is set correctly.
+      The app uses a single global title ("playwright-test-admin Demo Application").
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: screenshot
+      name: seo-dp-002-title-check
+  expected:
+    - Browser title is "playwright-test-admin Demo Application"
+    - Title is not blank, "undefined", or a raw component name
+
+# ============================================================
+# EXTERNAL LINK TESTS — Footer link validation
+# ============================================================
+
+- id: LINK-DP-001
+  name: Footer Social Links Are Accessible
+  type: external-link
+  module: links
+  feature: External Links - Footer Icons
+  priority: medium
+  web3: false
+  wallet_popups: 0
+  depends_on: []
+  description:
+    purpose: |
+      Verify that the 4 social icon links in the page footer (GitHub, Facebook,
+      Twitter, LinkedIn — visible in screenshots) are accessible and not broken.
+    what_is_checked:
+      - HTTP status (not 404)
+      - No "Not Found" text on linked page
+      - Links are reachable within timeout
+  steps:
+    - action: navigate
+      url: /pages/forms/datepicker
+    - action: wait
+      ms: 2000
+    - action: collect-external-links
+      selector: "nb-layout-footer a[href^='http'], footer a[href^='http']"
+      exclude_domains:
+        - localhost
+        - 127.0.0.1
+    - action: check-external-links
+      timeout: 10000
+      check_for_404: true
+      check_for_not_found_text: true
+    - action: screenshot
+      name: link-dp-001-footer-links
+  expected:
+    - All footer social links return HTTP 200
+    - No 404 status codes
+    - No "Not Found" text on linked pages
+    - GitHub, Facebook, Twitter, LinkedIn pages load successfully
