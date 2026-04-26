@@ -44,7 +44,7 @@
     - action: screenshot
       name: flow-dp-001-calendar-open
     - action: click
-      selector: "nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('10')"
+      selector: "nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('10')"
     - action: wait
       ms: 300
     - action: screenshot
@@ -88,13 +88,13 @@
     - action: screenshot
       name: flow-dp-002-range-open
     - action: click
-      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('5')"
+      selector: "nb-calendar-range-day-cell:not(.bounding-month) .cell-content:has-text('5')"
     - action: wait
       ms: 300
     - action: screenshot
       name: flow-dp-002-start-selected
     - action: click
-      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('15')"
+      selector: "nb-calendar-range-day-cell:not(.bounding-month) .cell-content:has-text('15')"
     - action: wait
       ms: 300
     - action: screenshot
@@ -137,7 +137,7 @@
     - action: screenshot
       name: flow-dp-003-minmax-open
     - action: click
-      selector: "nb-datepicker nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('17')"
+      selector: "nb-datepicker nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('17')"
     - action: wait
       ms: 300
     - action: screenshot
@@ -180,7 +180,7 @@
     - action: screenshot
       name: flow-dp-004-prev-month
     - action: click
-      selector: "nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('20')"
+      selector: "nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('20')"
     - action: wait
       ms: 300
     - action: screenshot
@@ -452,7 +452,7 @@
     - action: wait
       ms: 500
     - action: click
-      selector: "nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('10')"
+      selector: "nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('10')"
     - action: wait
       ms: 300
     - action: screenshot
@@ -613,7 +613,7 @@
     - action: wait
       ms: 500
     - action: click
-      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('8')"
+      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('8')"
     - action: wait
       ms: 300
     - action: screenshot
@@ -649,7 +649,7 @@
     - action: screenshot
       name: func-dp-010-minmax-disabled-visible
     - action: click
-      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('3')"
+      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('3')"
     - action: wait
       ms: 300
     - action: screenshot
@@ -683,7 +683,7 @@
     - action: wait
       ms: 500
     - action: click
-      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('16')"
+      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('16')"
     - action: wait
       ms: 300
     - action: screenshot
@@ -843,7 +843,7 @@
     - action: screenshot
       name: net-dp-002-calendar-offline
     - action: click
-      selector: "nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('10')"
+      selector: "nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('10')"
     - action: wait
       ms: 300
     - action: screenshot
@@ -915,7 +915,7 @@
     - action: wait
       ms: 500
     - action: click
-      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('5')"
+      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('5')"
     - action: wait
       ms: 300
     - action: screenshot
@@ -948,7 +948,7 @@
     - action: wait
       ms: 500
     - action: click
-      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('25')"
+      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('25')"
     - action: wait
       ms: 300
     - action: screenshot
@@ -984,7 +984,7 @@
     - action: screenshot
       name: neg-dp-003-min-boundary
     - action: click
-      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('9')"
+      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('9')"
     - action: wait
       ms: 300
     - action: screenshot
@@ -994,7 +994,7 @@
     - action: wait
       ms: 500
     - action: click
-      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('19')"
+      selector: "nb-datepicker:last-of-type nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('19')"
     - action: wait
       ms: 300
     - action: screenshot
@@ -1028,11 +1028,11 @@
     - action: wait
       ms: 500
     - action: click
-      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('5')"
+      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('5')"
     - action: wait
       ms: 200
     - action: click
-      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('10')"
+      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('10')"
     - action: wait
       ms: 300
     - action: screenshot
@@ -1042,7 +1042,7 @@
     - action: wait
       ms: 500
     - action: click
-      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .day-cell:has-text('20')"
+      selector: "nb-rangepicker nb-calendar-day-cell:not(.bounding-month) .cell-content:has-text('20')"
     - action: wait
       ms: 200
     - action: screenshot
@@ -1079,7 +1079,7 @@
     - action: screenshot
       name: neg-dp-005-bounding-days-visible
     - action: click
-      selector: "nb-calendar-day-cell.bounding-month .day-cell:has-text('29')"
+      selector: "nb-calendar-day-cell.bounding-month .cell-content:has-text('29')"
     - action: wait
       ms: 300
     - action: screenshot

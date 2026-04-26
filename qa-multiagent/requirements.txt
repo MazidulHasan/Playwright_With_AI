@@ -1,0 +1,8 @@
+# Core orchestration
+langgraph>=0.2.40
+python-dotenv>=1.0.1
+
+# Optional: only needed when QA_BACKEND=api (direct Anthropic API instead of
+# Claude Code CLI). Uncomment to use:
+# langchain-anthropic>=0.2.4
+# langchain-core>=0.3.15

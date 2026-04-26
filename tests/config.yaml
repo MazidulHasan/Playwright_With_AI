@@ -1,6 +1,6 @@
-project:
+config.yaml project:
   name: ngx-admin Datepicker
-  url: http://localhost:4200
+  url: http://localhost:3000
   page: /pages/forms/datepicker
   framework: Angular 14 + Nebular 10
   title: playwright-test-admin Demo Application
